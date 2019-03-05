@@ -1,0 +1,173 @@
+/**
+* 节点类
+* 
+*/
+class Node{
+    public $rootNode;
+    public $leftNode;
+    public $rightNode;
+    
+    public function __construct($value){
+        $this->rootNode = $value;
+    }
+}
+
+/**
+* 二叉树类
+*
+*/
+class BinaryTree{
+  public $root; //根
+  public $sortArr = [];//排序数组
+  
+  //插入数据
+  public function insert($value){
+     if(empty($value)){
+          echo "error value";
+     }
+     
+     $value = intval($value);
+     $node = new Node($value);
+     if(!$this->root){
+          $this->root = $node;
+     }else{
+          $this->insertNode($this->root, $node);
+     }
+  }
+  
+  //插入节点
+  private function insertNode($rootNode, $node){
+      if($node->rootNode >= $rootNode->rootNode){
+          // 右插入
+          if(!$rootNode->rightNode){
+                $rootNode->rightNode = $node;    
+          }else{
+                $this->insertNode($rootNode->rightNode, $node);
+          }
+      }else{
+         // 左插入
+         if(!$rootNode->leftNode){
+                $rootNode->leftNode = $node;    
+          }else{
+                $this->insertNode($rootNode->leftNode, $node);
+          }
+      }
+  }
+  
+  public function travers($type = 'pre'){
+      if(!$this->root){
+          echo "null";
+      }else{
+          switch ($type) {
+                case 'pre':
+                    echo "start pre travers".PHP_EOL;
+                    $this->preTravers($this->root);
+                    echo PHP_EOL."end pre travers".PHP_EOL;
+                    break;
+                case 'mid':
+                    echo "start mid travers".PHP_EOL;
+                    $this->midTravers($this->root);
+                    echo PHP_EOL."end mid travers".PHP_EOL;
+                    break;
+                case 'end':
+                    echo "start end travers".PHP_EOL;
+                    $this->endTravers($this->root);
+                    echo PHP_EOL."end end travers".PHP_EOL;
+                    break;
+                default:
+                    echo "start pre travers".PHP_EOL;
+                    $this->preTravers($this->root);
+                    echo PHP_EOL."end pre travers".PHP_EOL;
+                    break;
+            }
+      }      
+  }
+  
+  //先序遍历
+  private function preTravers($node){
+        while($node->rootNode){
+            echo $node->rootNode." ";
+            if($node->leftNode){
+               $this->preTravers($node->leftNode);
+            }
+            if($node->rightNode){
+               $this->preTravers($node->rightNode);
+            }
+            break;
+        }
+  }
+  
+  //中序遍历
+  private function midTravers($node){
+        while($node->rootNode){
+            if($node->leftNode){
+               $this->midTravers($node->leftNode);
+            }
+            
+            echo $node->rootNode." ";
+            
+            if($node->rightNode){
+               $this->midTravers($node->rightNode);
+            }
+            break;
+        }
+  }
+  
+  //后序遍历
+  private function endTravers($node){
+         while($node->rootNode){
+            if($node->leftNode){
+               $this->endTravers($node->leftNode);
+            }
+            
+            if($node->rightNode){
+               $this->endTravers($node->rightNode);
+            }
+            
+            echo $node->rootNode." ";
+            break;
+        }
+  }
+  
+  //排序
+  public function sort(){
+      if(!$this->root){
+        echo "empty tree";
+      }else{
+          $this->sortTree($this->root);
+      }
+  }
+  
+  private function sortTree($node){
+       if(!empty($node->rootNode)){
+            if($node->leftNode){
+                $this->sortTree($node->leftNode);
+            }
+            
+            array_push($this->sortArr, $node->rootNode);
+            
+            if($node->rightNode){
+                $this->sortTree($node->rightNode);
+            }            
+       }
+  }
+}
+
+
+//$arr = range(1,9);
+//shuffle($arr);
+$arr = [5,9,7,2,8,6,4,1,3];
+
+$tree = new BinaryTree();
+foreach($arr as $item){
+   $tree->insert($item);
+}
+
+var_dump($tree);
+
+$tree->travers();
+$tree->travers('mid');
+$tree->travers('end');
+
+$tree->sort();
+print_r($tree->sortArr);
