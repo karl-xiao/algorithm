@@ -1,0 +1,51 @@
+/**
+* 堆操作类
+*
+*/
+class Heap{
+    public $arr = [];
+    public $sortArr = [];
+    public function create(){
+        if(empty($arr)){
+            echo "空堆".PHP_EOL;
+        }else{
+            $this->createHeap($this->arr);
+        }  
+    }
+    
+    private function createHeap(&$arr){
+        $midPos = intval(count($arr)/2) -1;
+        for($i=$midPos;$i>=0;$i--){
+            $leftPos = $i *2 + 1;
+            $rightPos = $i *2 + 2;
+            if($leftPos <= count($arr)){
+                $min = $leftPos;
+                if($rightPos <= count($arr) && $arr[$rightPos] < $arr[$leftPos]){
+                    $min = $rightPos;                    
+                }
+                
+                $this->swap($arr,$i,$min);
+            }
+        }
+    }
+    
+    private function swap(&$arr, $index, $swapIndex){
+        $tmp = $arr[$swapIndex];
+        $arr[$swapIndex] = $arr[$index];
+        $arr[$index] = $tmp;
+     }
+     
+     public function sort(){
+          $this->sortArr = $this->arr; 
+          $this->sortHeap($this->sortArr);
+     }
+     
+     private function sortHeap(&$arr){
+          $size = count($arr);
+          for($i = $size -1; $i > 0; $i--){
+               $this->swap($arr,$i,0);
+               $size--;
+               $this->createHeap($arr);
+          }
+     }
+}
