@@ -85,7 +85,7 @@ class BinaryTree{
   
   //先序遍历
   private function preTravers($node){
-        while($node->rootNode){
+        if(!empty($node->rootNode)){
             echo $node->rootNode." ";
             if($node->leftNode){
                $this->preTravers($node->leftNode);
@@ -93,13 +93,12 @@ class BinaryTree{
             if($node->rightNode){
                $this->preTravers($node->rightNode);
             }
-            break;
         }
   }
   
   //中序遍历
   private function midTravers($node){
-        while($node->rootNode){
+        if(!empty($node->rootNode)){
             if($node->leftNode){
                $this->midTravers($node->leftNode);
             }
@@ -109,13 +108,12 @@ class BinaryTree{
             if($node->rightNode){
                $this->midTravers($node->rightNode);
             }
-            break;
         }
   }
   
   //后序遍历
   private function endTravers($node){
-         while($node->rootNode){
+         if(!empty($node->rootNode)){
             if($node->leftNode){
                $this->endTravers($node->leftNode);
             }
@@ -125,7 +123,6 @@ class BinaryTree{
             }
             
             echo $node->rootNode." ";
-            break;
         }
   }
   
