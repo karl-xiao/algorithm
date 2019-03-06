@@ -5,26 +5,30 @@
 class Heap{
     public $arr = [];
     public $sortArr = [];
+    
+    //创建堆
     public function create(){
-        if(empty($arr)){
+        if(empty($this->arr)){
             echo "空堆".PHP_EOL;
         }else{
-            $this->createHeap($this->arr);
+            $this->createHeap($this->arr, count($this->arr));
         }  
     }
     
-    private function createHeap(&$arr){
-        $midPos = intval(count($arr)/2) -1;
+    private function createHeap(&$arr, $size){
+        $midPos = intval($size/2) -1;
         for($i=$midPos;$i>=0;$i--){
-            $leftPos = $i *2 + 1;
-            $rightPos = $i *2 + 2;
-            if($leftPos <= count($arr)){
+            $leftPos = $i * 2 + 1;
+            $rightPos = $i * 2 + 2;
+            if($leftPos < $size){
                 $min = $leftPos;
-                if($rightPos <= count($arr) && $arr[$rightPos] < $arr[$leftPos]){
+                if($rightPos < $size && ($arr[$rightPos] < $arr[$leftPos])){
                     $min = $rightPos;                    
                 }
                 
-                $this->swap($arr,$i,$min);
+                if($arr[$min] < $arr[$i]){
+                    $this->swap($arr,$min,$i);
+                }
             }
         }
     }
@@ -37,15 +41,23 @@ class Heap{
      
      public function sort(){
           $this->sortArr = $this->arr; 
-          $this->sortHeap($this->sortArr);
+          $this->sortHeap();
      }
      
-     private function sortHeap(&$arr){
-          $size = count($arr);
+     private function sortHeap(){
+          $size = count($this->sortArr);
           for($i = $size -1; $i > 0; $i--){
-               $this->swap($arr,$i,0);
+               $this->swap($this->sortArr,$i,0);
                $size--;
-               $this->createHeap($arr);
+               $this->createHeap($this->sortArr, $size);
           }
      }
 }
+
+$heap = new Heap();
+$heap->arr = [12,31,86,28,95,123,56];
+$heap->create();
+print_r($heap->arr);
+
+$heap->sort();
+print_r($heap->sortArr);
